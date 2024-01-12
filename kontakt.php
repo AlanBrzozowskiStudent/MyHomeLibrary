@@ -1,11 +1,15 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyHomeLibrary - Kontakt</title>
-    <link rel="shortcut icon" type="image/ico" href="./img/Paomedia-Small-N-Flat-Book.png">
+    <title>MyNewHome - Contact Page</title>
+    <link rel="shortcut icon" type="image/ico" href="./img/house_icon.png">
     <!-- Importy fonty, bootstrap, ikony, css -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +23,7 @@
     <!-- Navbar z bootstrapa -->
     <nav class="navbar navbar-expand-lg py-2 sticky-top" style="background-color: #1F8A70;">
         <div class="container">
-          <a class="navbar-brand text-light" href="#"><i class="bi bi-book text-light"></i> MyHomeLibrary</a>
+          <a class="navbar-brand text-light" href="#"><i class="bi bi-house-heart text-light"></i> MyNewHome</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -27,10 +31,9 @@
             <div class="navbar-nav ms-auto">
               <a class="nav-link px-lg-3 text-light rounded-pill" href="index.php">Home</a>
               <?php
-                session_start();
                 if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true)) // jeśli user jest zalogowany pokaż Twoje konto
                 {
-                    echo '<a class="nav-link px-lg-3 text-light rounded-pill" href="library.php">Twoja Biblioteka</a>';
+                    echo '<a class="nav-link px-lg-3 text-light rounded-pill" href="page_offers.php">Oferty</a>';
                     echo '<a class="nav-link px-lg-3 text-light rounded-pill" href="main.php">Twoje konto</a>';
                     echo '<a class="nav-link px-lg-3 text-light rounded-pill" href="logout.php">Wyloguj</a>';
                 }
@@ -53,13 +56,15 @@
         <section class="contact py-1">
             <div class="container">
                 <div class="text-center py-3">
-                    <p class="display-3">Kontakt</p>
+                    <p class="display-3">Biuro sprzedaży:</p>
                 </div>
                 <div class="row">
                     <div class="col-md-5 col-lg-4">
                         <div class="border p-5 mb-4 text-center">
                             <h3 class="green-text">Wykonanie strony:</h3>
                             <p>Alan Brzozowski</p>
+                            <p>Paweł Bartkowicz</p>
+                            <p>Paweł Bordziakowski</p>
                             <p class="mt-3 fw-bold text-uppercase green-text">adres</p>
                             <p>ul.Powstańców Wielkopolskich 5</p>
                             <p>61-895 Poznań</p>
@@ -86,7 +91,7 @@
         </section>
     </main>
   <footer class="bg-dark text-light border-top">
-    <p class="text-center mb-0 py-5">&copy; MyHomeLibrary 2023</p>
+      <p class="text-center mb-0 py-5">&copy; MyNewHome 2024</p>
   </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </body>
