@@ -53,7 +53,7 @@
 
     <section class="welcome-text d-flex flex-column justify-content-center align-items-center text-center">
       <p>Twoja aplikacja do zarządzania domową biblioteką!</p>
-      <p class="text-how-it-work">Jak to działa?</p>
+      <p class="text-how-it-work">Jak to działa? zmianaaaaaassssssssssssqqqqqqqqqqqtttt</p>
     </section>
 
     <section class="how-works-section">
