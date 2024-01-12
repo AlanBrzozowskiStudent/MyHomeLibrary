@@ -37,7 +37,7 @@ body {
     position: relative;
     height: 400px;
     z-index: 0;
-    background-image: url(../img/books-2-hq.jpg);
+    background-image: url(../img/main_photo1.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -54,7 +54,7 @@ body {
     color: #1F8A70;
 }
 
-/* przykładowa biblioteka */
+/* przykładowe oferty */
 .example{
     background-color: rgb(248, 248, 248);
 }
@@ -72,7 +72,7 @@ body {
     font-size: 1rem;
 }
 
-/* kontakt */
+/* contact */
 
 .contact-hero {
 	background-image: url('../img/contact/contact-hero.jpg');
@@ -107,7 +107,7 @@ font-size: 1.6rem;
     color: #1F8A70;
 }
 
-/* Logowanie */
+/* Login */
 #login .container #login-row #login-column #login-box {
     max-width: 600px;
     border: 1px solid #9C9C9C;
