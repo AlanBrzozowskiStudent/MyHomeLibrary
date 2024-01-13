@@ -1,65 +1,78 @@
 <?php
 session_start();
 
-  // zabezpieczenie jeśli nie zalogowany nie da się zobaczyć main.php
-  if (!isset($_SESSION['zalogowany']))
-  {
+// zabezpieczenie jeśli nie zalogowany nie da się zobaczyć main.php
+if (!isset($_SESSION['zalogowany'])) {
     header('Location: index.php');
     exit();
-  }
+}
 
-    // Załaduj dane do połączenia z bazy danych z pliku `connect.php`
-    require_once 'connect.php';
+require_once 'connect.php';
 
-    $userId = $_SESSION['id'];
-    $success = false;
+$userId = $_SESSION['id'];
+$success = false;
 
-    // Sprawdzanie metody post
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Pobieranie danych z formularza
-        $propertyType = $_POST['property_type'] ?? '';
-        $address = $_POST['address'] ?? '';
-        $area = $_POST['area'] ?? '';
-        $price = $_POST['price'] ?? '';
-        $description = $_POST['description'] ?? '';
-        $contactEmail = $_POST['contact_email'] ?? '';
-        $contactPhone = $_POST['contact_phone'] ?? '';
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $propertyType = $_POST['property_type'] ?? '';
+    $address = $_POST['address'] ?? '';
+    $area = $_POST['area'] ?? '';
+    $price = $_POST['price'] ?? '';
+    $description = $_POST['description'] ?? '';
+    $contactEmail = $_POST['contact_email'] ?? '';
+    $contactPhone = $_POST['contact_phone'] ?? '';
 
-        // Otworzenie połączenia z bazą danych
-        try {
-            $db = new PDO("mysql:host=$host;dbname=$db_name;charset=utf8", $db_user, $db_password);
-            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            
+    try {
+        $db = new PDO("mysql:host=$host;dbname=$db_name;charset=utf8", $db_user, $db_password);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // Przygotowanie zapytania
-            $stmt = $db->prepare("INSERT INTO offers (user_id, property_type, address, area, price, description, contact_email, contact_phone) VALUES (:user_id, :property_type, :address, :area, :price, :description, :contact_email, :contact_phone)");
+        $stmt = $db->prepare("INSERT INTO offers (user_id, property_type, address, area, price, description, contact_email, contact_phone) VALUES (:user_id, :property_type, :address, :area, :price, :description, :contact_email, :contact_phone)");
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->bindParam(':property_type', $propertyType);
+        $stmt->bindParam(':address', $address);
+        $stmt->bindParam(':area', $area);
+        $stmt->bindParam(':price', $price);
+        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':contact_email', $contactEmail);
+        $stmt->bindParam(':contact_phone', $contactPhone);
+        
+        $stmt->execute();
+        $lastOfferId = $db->lastInsertId();
+        $success = true;
 
-            // Powiązanie zmiennych i wykonanie zapytania
-            $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-            $stmt->bindParam(':property_type', $propertyType, PDO::PARAM_STR);
-            $stmt->bindParam(':address', $address, PDO::PARAM_STR);
-            $stmt->bindParam(':area', $area);
-            $stmt->bindParam(':price', $price);
-            $stmt->bindParam(':description', $description, PDO::PARAM_STR);
-            $stmt->bindParam(':contact_email', $contactEmail, PDO::PARAM_STR);
-            $stmt->bindParam(':contact_phone', $contactPhone, PDO::PARAM_STR);
+        // Jeżeli oferta została dodana, przesyłamy zdjęcia.
+        if ($success && isset($_FILES['offer_images'])) {
+            $images = $_FILES['offer_images'];
+            $mainImageIndex = isset($_POST['main_image']) ? intval($_POST['main_image']) - 1 : 0;
 
-            // Wykonanie zapytania
-            $stmt->execute();
-            $success = true;
+            for ($i = 0; $i < count($images['name']); $i++) {
+                if ($images['error'][$i] == UPLOAD_ERR_OK) {
+                    $fileTmpPath = $images['tmp_name'][$i];
+                    $fileName = uniqid() . basename($images['name'][$i]);
+                    $filePath = 'img/' . $fileName;
 
-        } catch (PDOException $e) {
-            // Logowanie błędów
-            // error_log($e->getMessage());
-
-            // Przechowanie komunikatu o błędzie w sesji, do wyświetlenia dla użytkownika
-            $_SESSION['add_offer_message'] = 'Wystąpił błąd podczas dodawania oferty: ' . $e->getMessage();
-            header('Location: kontakt.php');
-            exit();
+                    if (move_uploaded_file($fileTmpPath, $filePath)) {
+                        $isMain = ($i === $mainImageIndex) ? 1 : 0;
+                        
+                        $stmt_img = $db->prepare("INSERT INTO offer_images (offer_id, image_filename, is_main) VALUES (:offer_id, :image_filename, :is_main)");
+                        $stmt_img->bindParam(':offer_id', $lastOfferId);
+                        $stmt_img->bindParam(':image_filename', $fileName);
+                        $stmt_img->bindParam(':is_main', $isMain);
+                        $stmt_img->execute();
+                    }
+                }
+            }
         }
-    }
 
-// Przekierowanie z powrotem do formularza z odpowiednią wiadomością
+    } catch (PDOException $e) {
+        $_SESSION['add_offer_message'] = 'Wystąpił błąd podczas dodawania oferty: ' . $e->getMessage();
+        $db = null; // Zamykamy połączenie z bazą danych
+        header('Location: add_offer.php');
+        exit();
+    } finally {
+        $db = null; // Zawsze zamykamy połączenie z bazą danych
+    }
+}
+
 if ($success) {
     $_SESSION['add_offer_message'] = 'Pozytywnie dodano ofertę';
     header('Location: add_offer.php');
