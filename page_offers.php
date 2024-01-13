@@ -1,73 +1,59 @@
 <?php
 session_start();
+$pageTitle = 'Oferty';
+include('header.php');
 ?>
 
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyNewHome - Offers Page</title>
-    <link rel="shortcut icon" type="image/ico" href="./img/house_icon.png">
-    <!-- Importy fonty, bootstrap, ikony, css -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,700;1,400&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="./css/style.css">
-</head>
-<body>
-    <!-- Navbar z bootstrapa -->
-    <nav class="navbar navbar-expand-lg py-2 sticky-top" style="background-color: #1F8A70;">
-        <div class="container">
-          <a class="navbar-brand text-light" href="#"><i class="bi bi-house-heart text-light"></i> MyNewHome</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav ms-auto">
-              <a class="nav-link px-lg-3 text-light rounded-pill" href="index.php">Home</a>
-                <?php
-                  if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true)) // jeœli user jest zalogowany poka¿ Twoje konto
-                  {
-                    echo '<a class="nav-link px-lg-3 text-light rounded-pill" href="page_offers.php">Oferty</a>';
-                    echo '<a class="nav-link px-lg-3 text-light rounded-pill" href="main.php">Twoje konto</a>';
-                    echo '<a class="nav-link px-lg-3 text-light rounded-pill" href="logout.php">Wyloguj</a>';
-                  }
-                  else
-                  {
-                    echo '<a class="nav-link px-lg-3 text-light rounded-pill" href="login.php">Zaloguj lub utwórz konto</a>';
-                  }
+    <section class="welcome-text d-flex flex-column justify-content-center align-items-center text-center">
+        <a href="add_offer.php" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Dodaj oferte</a>
+    </section>
+
+    <section class="welcome-text d-flex flex-column justify-content-center align-items-center text-center">
+        <h2>Tutaj mo¿e jakaœ wyszukiwarka:</h2>
+    </section>
+
+    <?php
+        require_once 'connect.php';
+        try {
+            $db = new PDO("mysql:host=$host;dbname=$db_name;charset=utf8", $db_user, $db_password);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $db->prepare("SELECT * FROM offers");
+            $stmt->execute();
+            $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "B³¹d: " . $e->getMessage();
+        }
+    ?>
+
+    <section class="example">
+        <div class="container py-5 text-center">
+            <p class="display-3 orange-color mb-0 ">Wszystkie oferty:</p>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+            <?php
+                foreach ($offers as $offer):
                 ?>
-              <a class="nav-link px-lg-3 text-light rounded-pill" href="kontakt.php">Kontakt</a>
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="./img/example_photo2.jpg" class="card-img-top" alt="Oferta domu 1">
+                            <div class="card-body">
+                              <h5 class="card-title"><?= $offer['address'] ?></h5>
+                              <p class="card-text mb-0"><?= $offer['area'] ?>m2</p>
+                              <p class="card-text"><?= number_format($offer['price'], 2, ',', '.') ?> z³</p>
+                              <p class="card-text">Rodzaj nieruchomoœci: <?= $offer['property_type'] ?></p>
+                              <p class="card-text">Opis: <?= $offer['description'] ?></p>
+                              <p class="card-text">Kontakt - email: <?= $offer['contact_email'] ?></p>
+                              <p class="card-text">Kontakt - telefon: <?= $offer['contact_phone'] ?></p>
+                            </div>
+                        </div>
+                    </div>
+                <?php
+                endforeach;
+            ?>
             </div>
-          </div>
-        </div>
-    </nav>
-
-    <section id="home" class="home">
-        <!-- sekcja home zdjêcie w css -->
-        <div class="container h-100 d-flex flex-column justify-content-center align-items-center text-light text-center">
         </div>
     </section>
 
-    <section class="welcome-text d-flex flex-column justify-content-center align-items-center text-center">
-      <h4>Przegl¹daj oferty:</h4>
-    </section>
 
-    <section class="welcome-text d-flex flex-column justify-content-center align-items-center text-center">
-      <h4>tutaj dodamy: dodaj ofertê, jakaœ wyszukiwarka itp</h4>
-    </section>
-
-
-
-  
-  <footer class="bg-dark text-light border-top">
-      <p class="text-center mb-0 py-5">&copy; MyNewHome 2024</p>
-  </footer>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-</body>
-</html>
+<?php
+include('footer.php');
+?>
