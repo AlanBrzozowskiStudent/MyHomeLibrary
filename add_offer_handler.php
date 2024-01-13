@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// zabezpieczenie jeœli nie zalogowany nie da siê zobaczyæ main.php
+// zabezpieczenie jeÅ›li nie zalogowany nie da siÄ™ zobaczyÄ‡ main.php
 if (!isset($_SESSION['zalogowany'])) {
     header('Location: index.php');
     exit();
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $lastOfferId = $db->lastInsertId();
         $success = true;
 
-        // Je¿eli oferta zosta³a dodana, przesy³amy zdjêcia.
+        // JeÅ¼eli oferta zostaÅ‚a dodana, przesyÅ‚amy zdjÄ™cia.
         if ($success && isset($_FILES['offer_images'])) {
             $images = $_FILES['offer_images'];
             $mainImageIndex = isset($_POST['main_image']) ? intval($_POST['main_image']) - 1 : 0;
@@ -64,21 +64,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
     } catch (PDOException $e) {
-        $_SESSION['add_offer_message'] = 'Wyst¹pi³ b³¹d podczas dodawania oferty: ' . $e->getMessage();
-        $db = null; // Zamykamy po³¹czenie z baz¹ danych
+        $_SESSION['add_offer_message'] = 'WystÄ…piÅ‚ bÅ‚Ä…d podczas dodawania oferty: ' . $e->getMessage();
+        $db = null; // Zamykamy poÅ‚Ä…czenie z bazÄ… danych
         header('Location: add_offer.php');
         exit();
     } finally {
-        $db = null; // Zawsze zamykamy po³¹czenie z baz¹ danych
+        $db = null; // Zawsze zamykamy poÅ‚Ä…czenie z bazÄ… danych
     }
 }
 
 if ($success) {
-    $_SESSION['add_offer_message'] = 'Pozytywnie dodano ofertê wraz ze zdjêciami.';
-} else {
-    $_SESSION['add_offer_message'] = 'Nie uda³o siê dodaæ oferty.';
+    $_SESSION['add_offer_message'] = 'Pozytywnie dodano ofertÄ™';
+    header('Location: add_offer.php');
+    exit();
 }
-
-header('Location: add_offer.php');
-exit();
-?>

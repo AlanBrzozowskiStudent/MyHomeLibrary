@@ -9,11 +9,7 @@ include('header.php');
     </section>
 
     <section class="welcome-text d-flex flex-column justify-content-center align-items-center text-center">
-                <form action="page_offers.php" method="get">
-            <!-- Przyk≥ad prostej wyszukiwarki po rodzaju nieruchomoúci (moøesz rozszerzyÊ o wiÍcej parametrÛw) -->
-            <input type="text" name="search" placeholder="Szukaj nieruchomoúci..." />
-            <button type="submit" class="btn btn-primary">Szukaj</button>
-        </form>
+        <h2>Tutaj mo≈ºe jaka≈õ wyszukiwarka≈º≈º≈º≈º≈º≈º≈º≈º≈ºz:zz</h2>
     </section>
 
         <?php
@@ -22,7 +18,7 @@ include('header.php');
             $searchKeyword = $_GET['search'] ?? null;
             $db = new PDO("mysql:host=$host;dbname=$db_name;charset=utf8", $db_user, $db_password);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            // Doprecyzowanie zapytania jeúli przeszukiwanie jest wprowadzone
+            // Doprecyzowanie zapytania je≈õli przeszukiwanie jest wprowadzone
             $sql = "SELECT offers.*, offer_images.image_filename FROM offers LEFT JOIN offer_images ON offers.id = offer_images.offer_id AND offer_images.is_main = 1";
             if ($searchKeyword) {
                 $sql .= " WHERE offers.property_type LIKE :search";
@@ -39,13 +35,13 @@ include('header.php');
         ?>
                 <div class="col mb-4">
                     <div class="card h-100">
-                        <!-- ZdjÍcie g≥Ûwne oferty lub obraz placeholder, jeúli brak zdjÍcia -->
-                        <img src="<?= $offer['image_filename'] ? 'img/'.$offer['image_filename'] : './img/placeholder.jpg' ?>" class="card-img-top" alt="ZdjÍcie <?= $offer['address'] ?>">
+                        <!-- Zdjƒôcie g≈Ç√≥wne oferty lub obraz placeholder, je≈õli brak zdjƒôcia -->
+                        <img src="<?= $offer['image_filename'] ? 'img/'.$offer['image_filename'] : './img/placeholder.jpg' ?>" class="card-img-top" alt="Zdjƒôcie <?= $offer['address'] ?>">
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($offer['address']) ?></h5>
                             <p class="card-text mb-0"><?= htmlspecialchars($offer['area']) ?>m2</p>
-                            <p class="card-text"><?= htmlspecialchars(number_format($offer['price'], 2, ',', '.')) ?> z≥</p>
-                            <p class="card-text">Rodzaj nieruchomoúci: <?= htmlspecialchars($offer['property_type']) ?></p>
+                            <p class="card-text"><?= htmlspecialchars(number_format($offer['price'], 2, ',', '.')) ?> z≈Ç</p>
+                            <p class="card-text">Rodzaj nieruchomo≈õci: <?= htmlspecialchars($offer['property_type']) ?></p>
                             <p class="card-text">Opis: <?= htmlspecialchars($offer['description']) ?></p>
                             <p class="card-text">Kontakt - email: <?= htmlspecialchars($offer['contact_email']) ?></p>
                             <p class="card-text">Kontakt - telefon: <?= htmlspecialchars($offer['contact_phone']) ?></p>
@@ -55,7 +51,7 @@ include('header.php');
             <?php
             endforeach;
         } catch (PDOException $e) {
-            echo "B≥πd: " . $e->getMessage();
+            echo "B≈ÇƒÖd: " . $e->getMessage();
         }
         ?>
             </div>
