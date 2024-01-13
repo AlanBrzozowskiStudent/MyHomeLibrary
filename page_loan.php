@@ -1,6 +1,6 @@
 <?php
 session_start();
-$pageTitle = 'Oferty';
+$pageTitle = 'Kalkulator';
 include('header.php');
 
 function calculateMonthlyPayment($loanAmount, $interestRate, $loanTerm) {
