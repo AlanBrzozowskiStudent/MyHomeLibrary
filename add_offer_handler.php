@@ -1,14 +1,14 @@
 <?php
 session_start();
 
-  // zabezpieczenie jeœli nie zalogowany nie da siê zobaczyæ main.php
+  // zabezpieczenie jeÅ›li nie zalogowany nie da siÄ™ zobaczyÄ‡ main.php
   if (!isset($_SESSION['zalogowany']))
   {
     header('Location: index.php');
     exit();
   }
 
-    // Za³aduj dane do po³¹czenia z bazy danych z pliku `connect.php`
+    // ZaÅ‚aduj dane do poÅ‚Ä…czenia z bazy danych z pliku `connect.php`
     require_once 'connect.php';
 
     $userId = $_SESSION['id'];
@@ -25,7 +25,7 @@ session_start();
         $contactEmail = $_POST['contact_email'] ?? '';
         $contactPhone = $_POST['contact_phone'] ?? '';
 
-        // Otworzenie po³¹czenia z baz¹ danych
+        // Otworzenie poÅ‚Ä…czenia z bazÄ… danych
         try {
             $db = new PDO("mysql:host=$host;dbname=$db_name;charset=utf8", $db_user, $db_password);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -34,7 +34,7 @@ session_start();
             // Przygotowanie zapytania
             $stmt = $db->prepare("INSERT INTO offers (user_id, property_type, address, area, price, description, contact_email, contact_phone) VALUES (:user_id, :property_type, :address, :area, :price, :description, :contact_email, :contact_phone)");
 
-            // Powi¹zanie zmiennych i wykonanie zapytania
+            // PowiÄ…zanie zmiennych i wykonanie zapytania
             $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
             $stmt->bindParam(':property_type', $propertyType, PDO::PARAM_STR);
             $stmt->bindParam(':address', $address, PDO::PARAM_STR);
@@ -49,19 +49,19 @@ session_start();
             $success = true;
 
         } catch (PDOException $e) {
-            // Logowanie b³êdów
+            // Logowanie bÅ‚Ä™dÃ³w
             // error_log($e->getMessage());
 
-            // Przechowanie komunikatu o b³êdzie w sesji, do wyœwietlenia dla u¿ytkownika
-            $_SESSION['add_offer_message'] = 'Wyst¹pi³ b³¹d podczas dodawania oferty: ' . $e->getMessage();
+            // Przechowanie komunikatu o bÅ‚Ä™dzie w sesji, do wyÅ›wietlenia dla uÅ¼ytkownika
+            $_SESSION['add_offer_message'] = 'WystÄ…piÅ‚ bÅ‚Ä…d podczas dodawania oferty: ' . $e->getMessage();
             header('Location: kontakt.php');
             exit();
         }
     }
 
-// Przekierowanie z powrotem do formularza z odpowiedni¹ wiadomoœci¹
+// Przekierowanie z powrotem do formularza z odpowiedniÄ… wiadomoÅ›ciÄ…
 if ($success) {
-    $_SESSION['add_offer_message'] = 'Pozytywnie dodano ofertê.';
+    $_SESSION['add_offer_message'] = 'Pozytywnie dodano ofertÄ™';
     header('Location: add_offer.php');
     exit();
 }

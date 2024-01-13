@@ -9,7 +9,7 @@ include('header.php');
     </section>
 
     <section class="welcome-text d-flex flex-column justify-content-center align-items-center text-center">
-        <h2>Tutaj mo�e jaka� wyszukiwarka:</h2>
+        <h2>Tutaj może jakaś wyszukiwarkażżżżżżżżżz:zz</h2>
     </section>
 
     <?php
@@ -21,7 +21,7 @@ include('header.php');
             $stmt->execute();
             $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            echo "B��d: " . $e->getMessage();
+            echo "Błąd: " . $e->getMessage();
         }
     ?>
 
@@ -38,8 +38,8 @@ include('header.php');
                             <div class="card-body">
                               <h5 class="card-title"><?= $offer['address'] ?></h5>
                               <p class="card-text mb-0"><?= $offer['area'] ?>m2</p>
-                              <p class="card-text"><?= number_format($offer['price'], 2, ',', '.') ?> z�</p>
-                              <p class="card-text">Rodzaj nieruchomo�ci: <?= $offer['property_type'] ?></p>
+                              <p class="card-text"><?= number_format($offer['price'], 2, ',', '.') ?> zł</p>
+                              <p class="card-text">Rodzaj nieruchomości: <?= $offer['property_type'] ?></p>
                               <p class="card-text">Opis: <?= $offer['description'] ?></p>
                               <p class="card-text">Kontakt - email: <?= $offer['contact_email'] ?></p>
                               <p class="card-text">Kontakt - telefon: <?= $offer['contact_phone'] ?></p>
