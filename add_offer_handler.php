@@ -37,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         $success = $stmt->execute();
         $lastOfferId = $db->lastInsertId();
-        $success
 
         // Jeżeli oferta została dodana, przesyłamy zdjęcia.
         if ($success && isset($_FILES['offer_images'])) {
