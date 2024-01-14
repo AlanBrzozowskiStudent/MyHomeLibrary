@@ -54,6 +54,7 @@ try {
         <p class="display-5 orange-color mb-0 ">Wszystkie oferty:</p>
         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">';
     foreach ($offers as $offer):
+    $isOfferOwner = (isset($_SESSION['id']) && $_SESSION['id'] == $offer['user_id']);
 ?>
         <div class="col mb-4">
             <div class="card h-100">
@@ -70,12 +71,14 @@ try {
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalOfferImages<?= $offer['id'] ?>">
                         Pokaż wszystkie zdjęcia
                     </button>
-                    <!-- Edycja i usuwanie -->
-                    <button type="button" class="btn btn-warning" onclick="location.href='edit_offer.php?id=<?= $offer['id'] ?>'">Edytuj</button>
-                    <form method="POST" action="delete_offer.php" style="display: inline;">
-                        <input type="hidden" name="offer_id" value="<?= $offer['id'] ?>">
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć tę ofertę?')">Usuń</button>
-                    </form>
+                    <!-- Przyciski edycji i usuwania wyświetlane tylko dla właściciela oferty -->
+                    <?php if ($isOfferOwner): ?>
+                        <button type="button" class="btn btn-warning" onclick="location.href='edit_offer.php?id=<?= $offer['id'] ?>'">Edytuj</button>
+                        <form method="POST" action="delete_offer.php" style="display: inline;">
+                            <input type="hidden" name="offer_id" value="<?= $offer['id'] ?>">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć tę ofertę?')">Usuń</button>
+                        </form>
+                    <?php endif; ?>
                     <!-- Modal do wyświetlania zdjęć oferty -->
                     <div class="modal fade" id="modalOfferImages<?= $offer['id'] ?>" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered modal-xl">
