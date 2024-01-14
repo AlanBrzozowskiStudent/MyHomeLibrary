@@ -55,8 +55,21 @@ include('header.php');
                                 <label for="contact_phone" class="form-label">Numer telefonu</label>
                                 <input type="tel" class="form-control" name="contact_phone" required>
                             </div>
+                            <div class="mb-3">
+                            <?php for ($i = 1; $i <= 4; $i++): ?>
+                                <div class="mb-2">
+                                    <label for="offer_image<?php echo $i; ?>" class="form-label">Zdjęcie <?php echo $i; ?>:</label>
+                                    <input type="file" class="form-control" name="offer_images[]" accept="image/*" id="offer_image<?php echo $i; ?>" required>
+                                    <label class="form-check-label fs-5" for="main_image<?php echo $i; ?>">Czy zdjęcie główne?</label>
+                                    <input class="form-check-input" type="radio" name="main_image" id="main_image<?php echo $i; ?>" value="<?php echo $i; ?>" <?php echo $i === 1 ? 'checked' : ''; ?>>
+                                </div>
+                            <?php endfor; ?>
+                            <p class="text-muted fs-6">Proszę dodać wszystkie 4 zdjęcia nieruchomości.</p>
                             <div class="d-grid">
                                 <button type="submit" name="submit" class="btn btn-outline-dark">Dodaj ofertę</button>
+                            </div>
+                            <div class="mb-3">                     
+
                             </div>
                         </form>
                     </div>
